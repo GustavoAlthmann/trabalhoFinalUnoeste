@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        text-align: center;
+        padding: 2rem;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 400px;
+      }
+
+      h1 {
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        color: blue;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      input {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        transition: border-color 0.3s;
+      }
+
+      input:focus {
+        border-color: blue;
+      }
+
+      button {
+        padding: 0.75rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        background-color: blue;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .error {
+        color: red;
+        font-size: 0.9em;
+        margin-top: 10px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Faça login para acessar o menu</h1>
+      <form id="loginForm" action="/login" method="post">
+        <input name="apelido" placeholder="Apelido" id="apelido" required />
+        <input
+          name="password"
+          placeholder="Senha"
+          id="password"
+          type="password"
+          required
+        />
+        <button type="submit">Entrar</button>
+        <div id="errorMessage" class="error">Usuário não existe</div>
+      </form>
+    </div>
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault(); // Impede o envio padrão do formulário
+
+          const apelido = document.getElementById("apelido").value;
+          const password = document.getElementById("password").value;
+
+          try {
+            const response = await fetch("/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ apelido, password }),
+            });
+
+            if (response.ok) {
+              // Redireciona ou realiza outra ação em caso de sucesso
+              window.location.href = "/menuPrincipal";
+            } else {
+              document.getElementById("errorMessage").style.display = "block";
+            }
+          } catch (error) {
+            console.error("Erro ao enviar formulário:", error);
+            document.getElementById("errorMessage").textContent =
+              "Erro no servidor. Tente novamente mais tarde.";
+            document.getElementById("errorMessage").style.display = "block";
+          }
+        });
+    </script>
+  </body>
+</html>
