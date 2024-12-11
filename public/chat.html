@@ -141,6 +141,7 @@
         fetch("/renderizarMsg")
           .then((response) => response.json())
           .then((data) => {
+            console.log(data, "na data");
             const chatBody = document.getElementById("chatBody");
             chatBody.innerHTML = "";
             data.forEach((msg) => {
