@@ -30,7 +30,15 @@ app.post("/login", (req, res) => {
   try {
     const { apelido, password } = req.body;
     if (apelido === "thebest" && password === "admin") {
-      usuariosDoSistema.push({ apelido, password });
+      let deveInserir = true;
+      for (const item of usuariosDoSistema) {
+        if (item.apelido == "thebest") {
+          deveInserir = false;
+        }
+      }
+      if (deveInserir) {
+        usuariosDoSistema.push({ apelido, password });
+      }
       const sessionId = Date.now();
       const dataFormatada = new Date().toLocaleString();
       req.session.user = {
